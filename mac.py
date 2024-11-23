@@ -1,11 +1,15 @@
+import sys
+import os
+
 import numpy as np
+from collections import deque
+from datetime import datetime
+
+import gymnasium as gym
+
+import utils
 import critic_network
 import actor_network
-import gymnasium as gym
-import sys
-import utils
-import os
-from collections import deque
 
 
 class mac:
@@ -47,6 +51,7 @@ class mac:
       li_episode_length.append(len(states))
       if episode % 10 == 0:
         print(episode, "return in last 10 episodes", np.mean(li_returns[-10:]))
+        self.save_episode(states, actions, rewards)
       li_returns.append(returns[0])
       sys.stdout.flush()
 
@@ -59,6 +64,17 @@ class mac:
 
     print("Training is finished successfully!")
     return
+
+  def save_episode(self, states, actions, rewards):
+    """
+    Save the episode data to a hardcoded file path for replay.
+    """
+    save_dir = './episodes'
+    os.makedirs(save_dir, exist_ok=True)
+    date_time = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+    filename = os.path.join(save_dir, 'saved_episode_' + date_time + '.npz')
+    np.savez_compressed(filename, states=states, actions=actions, rewards=rewards)
+    print(f"Episode saved at {filename}")
 
   def interact_one_episode(self, meta_params, episode):
     """
