@@ -31,7 +31,6 @@ def replay_episodes(folder_path, env_name):
     env.reset()
 
     for step, (state, action) in enumerate(zip(states, actions)):
-      print(f"Step {step}: State: {state}, Action: {action}")
       _, _, terminated, truncated, _ = env.step(action)
 
       if terminated or truncated:
