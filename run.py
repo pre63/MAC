@@ -7,11 +7,10 @@ import random
 import tensorflow as tf
 import utils
 
-import os
-
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'  # Suppress all logs except errors
-tf.get_logger().setLevel('ERROR')
-tf.autograph.set_verbosity(0)
+print("Num GPUs Available: ", len(tf.config.list_physical_devices('GPU')))
+print(tf.sysconfig.get_build_info()["cuda_version"])
+print(tf.sysconfig.get_build_info()["cudnn_version"])
+tf.keras.backend.clear_session()
 
 # get and set hyper-parameters
 meta_params, alg_params = {}, {}
@@ -80,7 +79,7 @@ meta_params['env_name'] = 'LunarLander-v3'  # Use the updated environment versio
 meta_params['env'].reset(seed=meta_params['seed_number'])
 
 # Configure Keras backend (if necessary)
-physical_devices = tf.config.list_physical_devices('GPU')
+physical_devices = tf.config.experimental.list_physical_devices('GPU')
 if physical_devices:
   for device in physical_devices:
     tf.config.experimental.set_memory_growth(device, True)

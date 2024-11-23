@@ -4,6 +4,7 @@ from keras.layers import Dense
 from keras.optimizers import Adam
 import numpy
 import random
+from keras import Input
 
 
 class critic:
@@ -23,10 +24,8 @@ class critic:
     '''
     model = Sequential()
 
-    model.add(Dense(units=self.params['critic_|h|'],
-                    activation='relu',
-                    input_dim=self.params['state_|dimension|'])
-              )
+    model.add(Input(shape=(self.params['state_|dimension|'],)))
+    model.add(Dense(units=self.params['critic_|h|'], activation='relu'))
 
     for _ in range(self.params['critic_num_h'] - 1):
       model.add(Dense(units=self.params['critic_|h|'], activation='relu'))

@@ -1,6 +1,7 @@
 numpy
 keras
 tensorflow
-gym
+gymnasium
+gymnasium[box2d]
 mac
 utils
